@@ -10,6 +10,9 @@ const Cart = require('./models/cart')
 const CartItem = require('./models/cart-item')
 const Order = require('./models/order')
 const OrderItem = require('./models/order-item')
+const Review = require('./models/review')
+const Post = require('./models/post')
+const Comment = require('./models/comment')
 
 
 
@@ -25,10 +28,13 @@ app.set('views', 'views');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const userRoutes = require('./routes/user')
+const reviewRoutes = require('./routes/nodejs')
+const postRoutes = require('./routes/post')
+const commentRoutes = require('./routes/comment')
 // const expenseRoutes = require('./routes/expense')
 const { name } = require('ejs');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req,res,next) => {
@@ -46,6 +52,13 @@ app.use(userRoutes);
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
+app.use(reviewRoutes)
+
+app.use(postRoutes)
+
+
+app.use(commentRoutes)
+
 
 app.use(errorController.get404);
 
@@ -58,6 +71,11 @@ Product.belongsToMany(Cart, {through: CartItem})
 Order.belongsTo(User)
 User.hasMany(Order)
 Order.belongsToMany(Product, {through : OrderItem})
+
+
+Post.hasMany(Comment);
+Comment.belongsTo(Post);
+
 
 sequelize
     // .sync({force: true})

@@ -12,7 +12,6 @@ exports.getProducts = (req, res, next) => {
   })
   .catch(err => console.log(err))
 };
-
 exports.getproduct = (req, res, next) => {
   const prodId = req.params.productId;
   Product.findByPk(prodId)
@@ -97,7 +96,6 @@ exports.getIndex = (req, res, next) => {
     })
   })
   .catch(err => console.log(err))
-
 };
 
 exports.getCart = (req, res, next) => {
@@ -128,9 +126,9 @@ exports.getCart = (req, res, next) => {
   //       pageTitle: 'Your Cart',
   //       products: cartProducts 
   //     })
-    
+
   //   })
-  
+
 //   });
 };
 
@@ -155,7 +153,7 @@ exports.postOrder = (req,res,next) => {
   })
   .then(result => {
     return fetchedCart.setProducts(null)
-    
+
   })
   .then(result => {
     res.redirect('/orders')
@@ -184,4 +182,3 @@ exports.getOrders = (req, res, next) => {
 //     pageTitle: 'Checkout'
 //   });
 // };
-
