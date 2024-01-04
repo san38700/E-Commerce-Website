@@ -17,10 +17,20 @@ function addUser(e) {
     postData()
     function postData() {
         axios
-        .post('http://localhost:3000/user/signup',userObj)
+        .post('http://localhost:3000/user/signup', userObj)
         .then(res => {
-            console.log(res)
+            console.log(res);
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.error(err);
+            const errorContainer = document.getElementById('error-container');
+    
+            if (errorContainer) {
+                const div = document.createElement('div');
+                div.textContent = err.message || 'An error occurred';
+                div.style.color = 'red'; 
+                errorContainer.appendChild(div);
+            }
+        });
     }
 }

@@ -17,6 +17,7 @@ const Comment = require('./models/comment')
 
 
 const sequelize = require('./util/database')
+
 var cors = require('cors')
 const app = express();
 
@@ -31,6 +32,7 @@ const userRoutes = require('./routes/user')
 const reviewRoutes = require('./routes/nodejs')
 const postRoutes = require('./routes/post')
 const commentRoutes = require('./routes/comment')
+const userSignUp = require('./routes/usersignup')
 // const expenseRoutes = require('./routes/expense')
 const { name } = require('ejs');
 
@@ -59,6 +61,8 @@ app.use(postRoutes)
 
 app.use(commentRoutes)
 
+app.use(userSignUp)
+
 
 app.use(errorController.get404);
 
@@ -77,6 +81,7 @@ Post.hasMany(Comment);
 Comment.belongsTo(Post);
 
 
+//sequelize for node-complete database commented out
 sequelize
     // .sync({force: true})
     .sync()
