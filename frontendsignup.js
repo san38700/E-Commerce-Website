@@ -1,6 +1,7 @@
 const postUser = document.getElementById('form')
 
 postUser.addEventListener('submit', addUser)
+const errorContainer = document.getElementById('error-container');
 
 function addUser(e) {
     e.preventDefault()
@@ -19,15 +20,18 @@ function addUser(e) {
         axios
         .post('http://localhost:3000/user/signup', userObj)
         .then(res => {
+            errorContainer.innerHTML =""
+            alert('Sign Up successful')
             console.log(res);
+
         })
         .catch(err => {
             console.error(err);
-            const errorContainer = document.getElementById('error-container');
+            // const errorContainer = document.getElementById('error-container');
     
             if (errorContainer) {
                 const div = document.createElement('div');
-                div.textContent = err.message || 'An error occurred';
+                div.textContent = err.response.data.error
                 div.style.color = 'red'; 
                 errorContainer.appendChild(div);
             }
