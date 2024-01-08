@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // const errorContainer = document.getElementById('error-container');
     
                 if (errorContainer) {
+                    errorContainer.innerHTML = ""
                     const div = document.createElement('div');
                     div.textContent = error.response.data.message
                     div.style.color = 'red'

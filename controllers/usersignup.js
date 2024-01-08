@@ -22,12 +22,12 @@ exports.userLogin = async (req, res) => {
       
 
       if (!user) {
-          return res.status(404).json({ message: 'user not found' });
+          return res.status(404).json({ message: '404 User not found' });
       }
 
 
       if (user.password != password) {
-          return res.status(401).json({ message: 'Invalid password' });
+          return res.status(401).json({ message: '401 User not authorized' });
       }
       res.json({user:user})
 
