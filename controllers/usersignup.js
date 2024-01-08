@@ -1,10 +1,14 @@
 const NewUser = require('../models/usersignup')
 
+const bcrypt = require('bcrypt')
+
 
 exports.createUser = async (req, res) => {
     try {
       const { name, email, password } = req.body;
-      const newUser = await NewUser.create({ name, email, password });
+      const saltRounds = 10
+      const hashedPassword = await bcrypt.hash(password, saltRounds)
+      const newUser = await NewUser.create({ name, email, password : hashedPassword });
       res.status(201).json({ user: newUser });
     } catch (error) {
       console.error(error);
@@ -25,10 +29,13 @@ exports.userLogin = async (req, res) => {
           return res.status(404).json({ message: '404 User not found' });
       }
 
+      //check if password matches after decryption
+      const passwordMatch = await bcrypt.compare(password, user.password);
 
-      if (user.password != password) {
-          return res.status(401).json({ message: '401 User not authorized' });
+      if (!passwordMatch) {
+        return res.status(401).json({ message: '401 User not authorized' });
       }
+
       res.json({user:user})
 
   } catch (error) {
