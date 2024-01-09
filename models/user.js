@@ -15,10 +15,6 @@ const User = sequelize.define('user', {
         unique: true
     },
     phone: {
-        type:Sequelize.INTEGER,
-        unique: true
-    },
-    email: {
         type:Sequelize.STRING,
         unique: true
     }

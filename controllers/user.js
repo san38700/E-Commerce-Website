@@ -6,11 +6,10 @@ exports.addUser = async (req,res,next) => {
     const phone = req.body.Phone
     const email = req.body.Email
 
-    const data = await User.create({name: name, phone: phone, email: email})
+    const data = await User.create({name: name, phone: phone,email: email  })
     res.status(201).json({newUser:data})
     }catch(err){
         console.log(err)
-        res.send('user data already exits')
     }
     
 }

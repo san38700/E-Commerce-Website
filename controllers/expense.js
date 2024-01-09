@@ -2,11 +2,10 @@ const Expense = require('../models/expense')
 
 exports.addExpense = async (req,res,next) => {
     try{
-    const amount = req.body.Amount
-    const description = req.body.Description
-    const category = req.body.Category
+    const amount = req.body.amount
+    const description = req.body.description
+    const category = req.body.category
     const data = await Expense.create({amount: amount, description: description, category: category})
-    res.send(category)
     res.status(201).json({newExpense:data})
     }catch(err){
         console.log('Similar data already added in description')
@@ -37,4 +36,5 @@ exports.editExpense = async (req,res,next) => {
     const expenseId = req.params.id
     await Expense.destroy({where: {id :expenseId}})
     res.sendStatus(200)
+    
 }

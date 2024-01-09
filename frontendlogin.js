@@ -22,8 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 errorContainer.innerHTML = ""
                 alert('User logged in successfully')
                 console.log(response.data.user); 
-                
+                window.location.href = 'D:\\Learning\\Controller\\2.2 00-starting-setup\\00-starting-setup\\expense.html';
             })
+            
             .catch(error => {
                 console.error(error); 
                 // const errorContainer = document.getElementById('error-container');

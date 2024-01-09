@@ -1,147 +1,120 @@
-var form = document.getElementById("form")
-var button = document.getElementById('submit-id')
-var items = document.getElementById('items')
-button.addEventListener('click', addItem)
-const apiURL ='http://localhost:3000/expense/add-expense'
+document.addEventListener('DOMContentLoaded', () => {
+    const expenseForm = document.getElementById('form');
+    const expenseList = document.getElementById('items');
 
-// function generateUniqueKey() {
-//     // Create a timestamp-based key to make it unique each time
-//     return description.value
-// }
+    // Create a single table for all expenses
+    const tableElement = document.createElement('table');
+    tableElement.style.borderCollapse = 'collapse';
+    tableElement.style.width = '100%';
 
-function addItem(e) {
-    e.preventDefault();
-  
-    var amount = document.getElementById("amount-id");
-    var description = document.getElementById('description');
-    var category = document.getElementById('category');
-    var li = document.createElement('li')
-    
-    // li.appendChild(document.createTextNode(amount));
-    // li.appendChild(document.createTextNode(description));
-    // li.appendChild(document.createTextNode(category));
-    li.appendChild(document.createTextNode(`${amount.value} - ${description.value} - ${category.value}`));
-    var deleteBtn = document.createElement('button');
-    var editBtn = document.createElement('button');
-    deleteBtn.appendChild(document.createTextNode("Delete Expense"))
-    deleteBtn.style.marginRight = '5px';
-    deleteBtn.style.marginLeft = '5px';
-    deleteBtn.className = "btn btn-outline-dark";
-    editBtn.className = "btn btn-outline-secondary"
-    editBtn.appendChild(document.createTextNode("Edit Expense"))
-    deleteBtn.addEventListener('click',removeItem);
-    editBtn.addEventListener('click',editItem);
-    // var key = generateUniqueKey();
-    li.appendChild(deleteBtn);
-    li.appendChild(editBtn);
-    let obj = {
-        Amount : amount.value,
-        Description : description.value,
-        Category : category.value
+    // Flag to check if headers have been added
+    let headersAdded = false;
 
-    }
+    // Event listener for form submission
+    expenseForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-    postData()
-    function postData() {
-        axios
-         .post(apiURL,obj)
-         .then(res => console.log(res))
-         .catch(err => console.log(err))
-      }
+        const amount = document.getElementById('amount-id').value;
+        const description = document.getElementById('description').value;
+        const category = document.getElementById('category').value;
 
-    // let obj_serialized = JSON.stringify(obj);
-    // localStorage.setItem(key,obj_serialized);
-    // console.log(localStorage);
+        try {
+            // Create a new expense
+            const response = await axios.post('http://localhost:3000/expense/add-expense', { amount, description, category });
 
-    items.appendChild(li)
-    function removeItem(e){
-        const li = e.target.parentElement;
-        li.remove()
-        // localStorage.removeItem(key)
-    }
-    function editItem(e){
-        const li = e.target.parentElement;
-        li.remove()
-        // const expenseDetailString = localStorage.getItem(key)
-        // localStorage.removeItem(key)
-        // const expenseDetails = JSON.parse(expenseDetailString);
-        // console.log(amount,expenseDetails.Amount)
-        amount.value = amount.value
-        description.value = description.value
-        category.value = category.value
-        
+            // Fetch and display expenses
+            fetchAndDisplayExpenses();
+        } catch (error) {
+            console.error(error);
+        }
+    });
 
-    }
-    form.reset();
-}
+    // Fetch and display expenses on page load
+    fetchAndDisplayExpenses();
 
-window.addEventListener("DOMContentLoaded",()=>{
-    //let storedUserObj = localStorage.getItem('userObj')
+    // Function to fetch and display Expenses
+    async function fetchAndDisplayExpenses() {
+        try {
+            clearTableContent();
 
-    axios.get('http://localhost:3000/expense/get-expense').then(
-        (resp)=>{
-            console.log(resp.data)
-            for(let i=0;i<resp.data.Expenses.length;i++){
-                showUseronScreen(resp.data.Expenses[i].amount,resp.data.Expenses[i].description,resp.data.Expenses[i].category,resp.data.Expenses[i].id)
-            
+            const response = await axios.get('http://localhost:3000/expense/get-expense');
+            const expenses = response.data.Expenses;
+            //console.log(expenses);
+
+            // Only add headers if not added yet
+            if (!headersAdded) {
+                const headerRow = tableElement.insertRow();
+                addTableHeader(headerRow, 'Amount');
+                addTableHeader(headerRow, 'Description');
+                addTableHeader(headerRow, 'Category');
+                //addTableHeader(headerRow, ''); // Empty cell for the delete button
+                headersAdded = true;
             }
-            }).catch((err)=>{
-            console.log(err)
-            })
-})
 
-function showUseronScreen(Amount,Description,Category,id){
-    var amount = document.getElementById("amount-id");
-    var description = document.getElementById('description');
-    var category = document.getElementById('category');
-    var id = id
-    var li = document.createElement('li')
-    // li.appendChild(document.createTextNode(amount));
-    // li.appendChild(document.createTextNode(description));
-    // li.appendChild(document.createTextNode(category));
-    li.appendChild(document.createTextNode(`${Amount} - ${Description} - ${Category}`));
-    var deleteBtn = document.createElement('button');
-    var editBtn = document.createElement('button');
-    deleteBtn.appendChild(document.createTextNode("Delete Expense"))
-    deleteBtn.style.marginRight = '5px';
-    deleteBtn.style.marginLeft = '5px';
-    deleteBtn.className = "btn btn-outline-dark";
-    editBtn.className = "btn btn-outline-secondary"
-    editBtn.appendChild(document.createTextNode("Edit Expense"))
-    deleteBtn.addEventListener('click',removeItem);
-    editBtn.addEventListener('click',editItem);
-    // var key = generateUniqueKey();
-    li.appendChild(deleteBtn);
-    li.appendChild(editBtn);
+            // Append the table to the expenseList
+            expenseList.appendChild(tableElement);
 
-    items.appendChild(li)
-
-    function removeItem(e){
-        const li = e.target.parentElement;
-        li.remove()
-        axios
-        .delete(`http://localhost:3000/expense/delete-expense/${id}`)
-        .then(console.log('success'))
-        .catch(err => console.log(err))
-
-        // localStorage.removeItem(key)
+            // Display expenses
+            for (let i = 0; i < expenses.length; i++) {
+                showExpenseOnScreen(expenses[i], i);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
-    function editItem(e){
-        const li = e.target.parentElement;
-        li.remove()
-        axios
-        .delete(`http://localhost:3000/expense/edit-expense/${id}`)
-        .then(console.log('success'))
-        .catch(err => console.log(err))
 
-        // const expenseDetailString = localStorage.getItem(key)
-        // localStorage.removeItem(key)
-        // const expenseDetails = JSON.parse(expenseDetailString);
-        // console.log(amount,expenseDetails.Amount)
-        amount.value = Amount
-        description.value = Description
-        category.value = Category
-        
-
+    function clearTableContent() {
+        // Remove all rows except the first row (headers)
+        while (tableElement.rows.length > 1) {
+            tableElement.deleteRow(1);
+        }
     }
-}
+
+    // Function to display an expense on the screen
+    function showExpenseOnScreen(expense, index) {
+        // Add a row with cells for each property and the delete button
+        const row = tableElement.insertRow();
+        addTableCell(row, expense.amount);
+        addTableCell(row, expense.description);
+        addTableCell(row, expense.category);
+
+        // Add the delete button to the last column
+        const deleteCell = row.insertCell();
+        deleteCell.style.textAlign = 'center';
+
+        const buttonElement = document.createElement('button');
+        buttonElement.className = 'btn btn-primary';
+        buttonElement.textContent = 'Delete Expense';
+        buttonElement.onclick = () => deleteExpense(expense.id, row);
+
+        deleteCell.appendChild(buttonElement);
+    }
+
+    // Function to add a table header cell with name
+    function addTableHeader(row, heading) {
+        const cell = row.insertCell();
+        cell.textContent = heading;
+        cell.style.fontWeight = 'bold';
+        cell.style.border = '1px solid #ddd';
+        cell.style.padding = '8px';
+    }
+
+    // Function to add a table cell with value
+    function addTableCell(row, value) {
+        const cell = row.insertCell();
+        cell.textContent = value;
+        cell.style.border = '1px solid #ddd';
+        cell.style.padding = '8px';
+    }
+
+    async function deleteExpense(expenseId, expenseItem) {
+        try {
+            const response = await axios.delete(`http://localhost:3000/expense/delete-expense/${expenseId}`);
+
+            // Remove the expense item from the DOM
+            expenseItem.remove();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+});

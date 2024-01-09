@@ -91,7 +91,7 @@ function addItem(e) {
         axios
          .post('http://localhost:3000/user/add-user',obj)
          .then(res => {
-            axios.get('http://localhost:3000/user/add-user').then(res => console.log(res))
+            axios.get('http://localhost:3000/user/get-users').then(res => console.log(res))
             console.log(res)
         })
          .catch(err => console.log(err))

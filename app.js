@@ -33,7 +33,7 @@ const reviewRoutes = require('./routes/nodejs')
 const postRoutes = require('./routes/post')
 const commentRoutes = require('./routes/comment')
 const userSignUp = require('./routes/usersignup')
-// const expenseRoutes = require('./routes/expense')
+const expenseRoutes = require('./routes/expense')
 const { name } = require('ejs');
 
 app.use(bodyParser.json({ extended: false }));
@@ -49,7 +49,7 @@ app.use((req,res,next) => {
 })
 
 app.use(userRoutes);
-// app.use(expenseRoutes)
+app.use(expenseRoutes)
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
@@ -81,31 +81,33 @@ Post.hasMany(Comment);
 Comment.belongsTo(Post);
 
 
-//sequelize for node-complete database commented out
+
 sequelize
     // .sync({force: true})
     .sync()
-    .then(result => {
-        return User.findByPk(1)
-        // console.log(result)
+    .then(result => app.listen(3000))
+    .catch(err => console.log(err))
+    // .then(result => {
+    //     return User.findByPk(1)
+    //     // console.log(result)
         
-    })
-    .then(user => {
-        if (!user) {
-            return User.create({name: 'Max', email: 'test@test.com', phone:9})
-        }
-        return user
-    })
-    .then(user => {
-        // console.log(user)
-        return user.createCart()
+    // })
+    // .then(user => {
+    //     if (!user) {
+    //         return User.create({name: 'Max', email: 'test@test.com', phone:9})
+    //     }
+    //     return user
+    // })
+    // .then(user => {
+    //     // console.log(user)
+    //     return user.createCart()
         
-    })
-    .then(cart => {
-        app.listen(3000)
-    })
-    .catch(err => {
-        console.log(err)
-    })
+    // })
+    // .then(cart => {
+    //     app.listen(3000)
+    // })
+    // .catch(err => {
+    //     console.log(err)
+    // })
 
 
