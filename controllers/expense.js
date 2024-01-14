@@ -1,21 +1,48 @@
 const Expense = require('../models/expense')
+const NewUser = require('../models/usersignup')
+const jwt = require('jsonwebtoken');
 
 exports.addExpense = async (req,res,next) => {
     try{
     const amount = req.body.amount
     const description = req.body.description
     const category = req.body.category
-    const data = await Expense.create({amount: amount, description: description, category: category})
+    const token = req.header('Authorization')
+    const user = jwt.verify(token,'9945B89D9F36B59C7C1BB97FF2F51')
+    console.log('userId >>>', user.userId)
+    const data = await Expense.create({amount: amount, description: description, category: category, newuserId: user.userId})
     res.status(201).json({newExpense:data})
     }catch(err){
-        console.log('Similar data already added in description')
+        console.log(err)
     }
 }
 
+exports.authenticate = async (req,res,next) => {
+    try {
+       const token = req.header('Authorization')
+       console.log(token)
+       const user = jwt.verify(token,'9945B89D9F36B59C7C1BB97FF2F51')
+       console.log('userId >>>', user.userId)
+ 
+       NewUser.findByPk(user.userId)
+         .then(user => {
+           req.user = user
+           next()
+         })
+    }
+     catch(err){
+       console.log(err)
+       return res.status(401).json({success:false})
+     }
+}
+
 exports.getExpense = async (req,res,next) => {
-    const expenses = await Expense.findAll()
+    // const expenses = await Expense.findAll()
+    const expenses = await Expense.findAll({where : {newuserid : req.user.id}})
     res.status(200).json({Expenses:expenses})
 }
+
+
 
 exports.deleteExpense = async (req,res,next) => {
     try{

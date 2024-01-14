@@ -12,7 +12,7 @@ const Expense = sequelize.define('expense', {
     amount:Sequelize.INTEGER,
     description: {
         type:Sequelize.STRING,
-        unique: true
+        unique: false
     },
     category: {
         type:Sequelize.STRING

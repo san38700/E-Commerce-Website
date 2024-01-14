@@ -13,6 +13,8 @@ const OrderItem = require('./models/order-item')
 const Review = require('./models/review')
 const Post = require('./models/post')
 const Comment = require('./models/comment')
+const Expense = require('./models/expense')
+const NewUser = require('./models/usersignup')
 
 
 
@@ -79,6 +81,9 @@ Order.belongsToMany(Product, {through : OrderItem})
 
 Post.hasMany(Comment);
 Comment.belongsTo(Post);
+
+NewUser.hasMany(Expense)
+Expense.belongsTo(NewUser)
 
 
 

@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => {
                 errorContainer.innerHTML = ""
                 alert('User logged in successfully')
-                console.log(response.data.user); 
+                console.log(response.data.user);
+                localStorage.setItem('jwtToken', response.data.jwtToken)
                 window.location.href = 'D:\\Learning\\Controller\\2.2 00-starting-setup\\00-starting-setup\\expense.html';
             })
             

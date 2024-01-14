@@ -20,8 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Create a new expense
-            const response = await axios.post('http://localhost:3000/expense/add-expense', { amount, description, category });
-
+            const token = localStorage.getItem('jwtToken')
+            //console.log(token)
+            const response = await axios.post(`http://localhost:3000/expense/add-expense`, { amount, description, category},{headers :{'Authorization': token}});
+            console.log(response)
             // Fetch and display expenses
             fetchAndDisplayExpenses();
         } catch (error) {
@@ -36,10 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchAndDisplayExpenses() {
         try {
             clearTableContent();
-
-            const response = await axios.get('http://localhost:3000/expense/get-expense');
+            const token = localStorage.getItem('jwtToken')
+            //console.log(token)
+            const response = await axios.get('http://localhost:3000/expense/get-expense',{headers: {'Authorization': token }});
             const expenses = response.data.Expenses;
-            //console.log(expenses);
+            console.log(expenses);
 
             // Only add headers if not added yet
             if (!headersAdded) {
@@ -56,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Display expenses
             for (let i = 0; i < expenses.length; i++) {
+                console.log(expenses[i])
                 showExpenseOnScreen(expenses[i], i);
             }
         } catch (error) {
@@ -72,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to display an expense on the screen
     function showExpenseOnScreen(expense, index) {
+        console.log(expense)
         // Add a row with cells for each property and the delete button
         const row = tableElement.insertRow();
         addTableCell(row, expense.amount);

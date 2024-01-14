@@ -6,7 +6,7 @@ const expenseController = require('../controllers/expense');
 
 router.post('/expense/add-expense',expenseController.addExpense)
 
-router.get('/expense/get-expense',expenseController.getExpense)
+router.get('/expense/get-expense',expenseController.authenticate,expenseController.getExpense)
 
 router.delete('/expense/delete-expense/:id',expenseController.deleteExpense)
 

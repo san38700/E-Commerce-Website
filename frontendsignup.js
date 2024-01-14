@@ -23,6 +23,7 @@ function addUser(e) {
             errorContainer.innerHTML =""
             alert('Sign Up successful')
             console.log(res);
+            window.location.href = "D:\\Learning\\Controller\\2.2 00-starting-setup\\00-starting-setup\\frontendlogin.html"
 
         })
         .catch(err => {

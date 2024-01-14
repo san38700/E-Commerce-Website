@@ -1,6 +1,5 @@
 const NewUser = require('../models/usersignup')
-const path = require('path')
-const fs = require('fs').promises;
+const jwt = require('jsonwebtoken');
 
 const bcrypt = require('bcrypt')
 
@@ -17,6 +16,11 @@ exports.createUser = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error or User already exists' });
     }
   };
+
+function generateAccessToken(id,name){
+  const jwtToken = jwt.sign({userId : id, name : name},'9945B89D9F36B59C7C1BB97FF2F51')
+  return jwtToken
+}
 
 exports.userLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -38,10 +42,11 @@ exports.userLogin = async (req, res) => {
         return res.status(401).json({ message: '401 User not authorized' });
       }
 
-      res.json({user:user})
+      res.json({user:user,jwtToken: generateAccessToken(user.id,user.name)})
 
   } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
