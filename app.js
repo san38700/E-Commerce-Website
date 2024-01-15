@@ -1,8 +1,10 @@
 const path = require('path');
 
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const Razorpay = require('razorpay');
 const errorController = require('./controllers/error');
 const Product = require('./models/product')
 const User = require('./models/user')
@@ -36,6 +38,7 @@ const postRoutes = require('./routes/post')
 const commentRoutes = require('./routes/comment')
 const userSignUp = require('./routes/usersignup')
 const expenseRoutes = require('./routes/expense')
+const purchaseRoutes = require('./routes/purchase')
 const { name } = require('ejs');
 
 app.use(bodyParser.json({ extended: false }));
@@ -65,6 +68,8 @@ app.use(commentRoutes)
 
 app.use(userSignUp)
 
+app.use(purchaseRoutes)
+
 
 app.use(errorController.get404);
 
@@ -74,9 +79,10 @@ User.hasOne(Cart)
 Cart.belongsTo(User)
 Cart.belongsToMany(Product, {through : CartItem})
 Product.belongsToMany(Cart, {through: CartItem})
-Order.belongsTo(User)
-User.hasMany(Order)
-Order.belongsToMany(Product, {through : OrderItem})
+//Order.belongsTo(User)
+//User.hasMany(Order) 
+//belongs to previous shop orders
+//Order.belongsToMany(Product, {through : OrderItem})
 
 
 Post.hasMany(Comment);
@@ -85,7 +91,8 @@ Comment.belongsTo(Post);
 NewUser.hasMany(Expense)
 Expense.belongsTo(NewUser)
 
-
+NewUser.hasMany(Order)
+Order.belongsTo(NewUser)
 
 sequelize
     // .sync({force: true})

@@ -1,3 +1,41 @@
+document.getElementById('buy-button').onclick = async function (e){
+    const token = localStorage.getItem('jwtToken')
+    //console.log(token)
+    const response = await axios.post('http://localhost:3000/purchase/purchase-premium', {}, {headers: {'Authorization': token}
+});
+    console.log(response)
+
+    var options = 
+        {
+            'key': response.data.key_id, 
+            'order_id': response.data.order.id,
+            'handler': async function(response) {
+                await axios.post('http://localhost:3000/purchase/updatetransactionstatus',
+                {
+                    order_id: options.order_id,
+                    payment_id: response.razorpay_payment_id,
+                },{headers: {'Authorization': token}})
+
+                document.getElementById('buy-button').innerText = 'Premium User';
+                document.getElementById('buy-button').disabled = true;
+                document.getElementById('buy-button').style.backgroundColor = 'gold';
+                
+                alert('You are now a premium user')
+                
+            }
+        }
+    const rzp1 = new Razorpay(options)
+    rzp1.open()
+    e.preventDefault()
+
+    rzp1.on('payment.failed', async function (response) {
+        await axios.post('http://localhost:3000/purchase/purchase-failure', {response}, {headers: {'Authorization': token}});
+        console.log('Payment failed:', response.error.metadata.order_id);
+        alert("Something went wrong")
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const expenseForm = document.getElementById('form');
     const expenseList = document.getElementById('items');
@@ -42,11 +80,20 @@ document.addEventListener('DOMContentLoaded', () => {
             //console.log(token)
             const response = await axios.get('http://localhost:3000/expense/get-expense',{headers: {'Authorization': token }});
             const expenses = response.data.Expenses;
-            console.log(expenses);
+            console.log(response.data.premiumuser);
+            const ispremiumuser = response.data.premiumuser
+
+            if (ispremiumuser === true){
+                document.getElementById('buy-button').innerText = 'Premium User';
+                document.getElementById('buy-button').disabled = true;
+                document.getElementById('buy-button').style.backgroundColor = 'gold';
+                document.getElementById('buy-button').style.pointerEvents = 'none';
+            }
 
             // Only add headers if not added yet
             if (!headersAdded) {
                 const headerRow = tableElement.insertRow();
+                addTableHeader(headerRow,'Sl.No')
                 addTableHeader(headerRow, 'Amount');
                 addTableHeader(headerRow, 'Description');
                 addTableHeader(headerRow, 'Category');
@@ -59,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Display expenses
             for (let i = 0; i < expenses.length; i++) {
-                console.log(expenses[i])
+                //console.log(expenses[i])
                 showExpenseOnScreen(expenses[i], i);
             }
         } catch (error) {
@@ -76,9 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to display an expense on the screen
     function showExpenseOnScreen(expense, index) {
-        console.log(expense)
+        //console.log(expense)
         // Add a row with cells for each property and the delete button
         const row = tableElement.insertRow();
+        addTableCell(row, index+1+".")
         addTableCell(row, expense.amount);
         addTableCell(row, expense.description);
         addTableCell(row, expense.category);
