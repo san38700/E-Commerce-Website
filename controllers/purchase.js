@@ -1,6 +1,8 @@
 const Razorpay = require('razorpay');
 const Order = require('../models/order')
-const { or } = require('sequelize')
+const Expense = require('../models/expense')
+const { or } = require('sequelize');
+const NewUser = require('../models/usersignup');
 
 exports.purchasepremium = async (req,res) => {
     try{
@@ -56,6 +58,7 @@ exports.updateTransactionStatus = async (req, res) => {
         console.log(err)
         res.status(403).json({error:err, message:'Something went wrong'})
     }
+
     // try{
     //     const {payment_id, order_id} = req.body
     //     Order.findOne({where: {orderid: order_id}}).then(order => {
@@ -74,4 +77,38 @@ exports.updateTransactionStatus = async (req, res) => {
     // }catch(err){
     //     console.log(err)
     // }
+}
+
+exports.leaderboard = async (req, res) => {
+    try{
+        const expenses = await Expense.findAll({include : NewUser})
+        
+            const groupedExpenses = {};
+
+            for (const expense of expenses) {
+                const userId = expense.newuserId;
+                const userName = expense.newuser.name;
+                const amount = expense.amount;
+
+                if (!groupedExpenses[userId]) {
+                    groupedExpenses[userId] = {
+                    userId: userId,
+                    userName: userName,
+                    totalExpenses: 0,
+                    };
+                }
+
+                groupedExpenses[userId].totalExpenses += amount;
+            }
+
+            // Convert the grouped expenses object to an array
+            const groupedExpensesArray = Object.values(groupedExpenses);
+            groupedExpensesArray.sort((a, b) => b.totalExpenses - a.totalExpenses);
+            //console.log(groupedExpenses)
+            console.log(groupedExpensesArray)
+            res.status(200).json(groupedExpensesArray)
+    }catch(err){
+        console.log(err)
+        res.status(500).json({error:"Internal Server Error"})
+    }
 }

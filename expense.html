@@ -8,7 +8,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
+            background-color: #d6e0ff;
         }
 
         #form {
@@ -40,14 +40,23 @@
             text-align: center;
         }
         #buy-button {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            padding: 10px;
+            /* position: fixed; */
+            padding: 3px;
+            margin: 20px auto;
             background-color: #3e9504;
             color: #fff;
             border: none;
             border-radius: 4px;
+            cursor: pointer;
+        }
+        #leaderboard {
+            /* position: fixed; */
+            padding: 5px;
+            /* margin: 20px auto; */
+            background-color: #f05603;
+            color: #fff;
+            border: none;
+            border-radius: 2px;
             cursor: pointer;
         }
     </style>
@@ -57,7 +66,8 @@
     <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
 <body> 
-    <button id="buy-button">Buy Premium</button>  
+    <!-- <button id="buy-button">Buy Premium</button> 
+    <button id="leaderboard" style="display: none;">Show leaderboard</button>  -->
     <form id="form">
         <label for ="Enter Expense Amount"><strong>Enter Expense Amount</strong></label>
         <br>
@@ -82,7 +92,13 @@
         <button id = "submit-id" class="btn-primary">Submit Expense</button>
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     </form>
-        <br>    
+    <button id="buy-button">Buy Premium</button>
+    <br>
+    <button id="leaderboard" style="display: none;">Show leaderboard</button>
+    <div id="leaderboard-items" style="display: inline-flex; flex-direction: column;" gap="10px";>
+        <!-- Your leaderboard items will be appended here -->
+    </div>
+        <br><br>
         <h2 id = "expense-id"> List of Expenses</h2>
         <ul id="items">
 

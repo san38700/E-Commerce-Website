@@ -1,3 +1,44 @@
+leaderBoardButton = document.getElementById('leaderboard')
+leaderBoardButton.addEventListener('click',leaderboard)
+
+function premiumuser(){
+    premiumlabel = document.getElementById('buy-button')
+    premiumlabel.innerText = 'Premium User';
+    premiumlabel.disabled = true;
+    premiumlabel.style.backgroundColor = 'gold';
+    premiumlabel.style.pointerEvents = 'none';
+
+    
+    leaderBoardButton.style.display = "block"
+}
+
+async function leaderboard(){
+    const leaderboard = document.getElementById('leaderboard-items');
+    leaderboard.innerHTML = ""
+    await axios.get('http://localhost:3000/premium/leaderboard')
+    .then(res => {
+        
+        res.data.forEach(expense => {
+            var i = 0
+            
+            const leaderboardItems = document.createElement('div');
+
+            // Create a text node with the userName and append it to the li element
+            const expensesTextNode = document.createTextNode(`---> Name:${expense.userName} Total Expense:${expense.totalExpenses}`);
+            leaderboardItems.appendChild(expensesTextNode);
+
+            // Append the li element to the leaderboard
+            leaderboard.appendChild(leaderboardItems);
+
+            console.log(expense);
+        });
+    })
+    .catch(err => console.log(err))
+
+    
+}
+
+
 document.getElementById('buy-button').onclick = async function (e){
     const token = localStorage.getItem('jwtToken')
     //console.log(token)
@@ -15,10 +56,12 @@ document.getElementById('buy-button').onclick = async function (e){
                     order_id: options.order_id,
                     payment_id: response.razorpay_payment_id,
                 },{headers: {'Authorization': token}})
+                
+                premiumuser()
 
-                document.getElementById('buy-button').innerText = 'Premium User';
-                document.getElementById('buy-button').disabled = true;
-                document.getElementById('buy-button').style.backgroundColor = 'gold';
+                // document.getElementById('buy-button').innerText = 'Premium User';
+                // document.getElementById('buy-button').disabled = true;
+                // document.getElementById('buy-button').style.backgroundColor = 'gold';
                 
                 alert('You are now a premium user')
                 
@@ -51,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener for form submission
     expenseForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-
         const amount = document.getElementById('amount-id').value;
         const description = document.getElementById('description').value;
         const category = document.getElementById('category').value;
@@ -64,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(response)
             // Fetch and display expenses
             fetchAndDisplayExpenses();
+            leaderboard()
         } catch (error) {
             console.error(error);
         }
@@ -84,10 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const ispremiumuser = response.data.premiumuser
 
             if (ispremiumuser === true){
-                document.getElementById('buy-button').innerText = 'Premium User';
-                document.getElementById('buy-button').disabled = true;
-                document.getElementById('buy-button').style.backgroundColor = 'gold';
-                document.getElementById('buy-button').style.pointerEvents = 'none';
+                premiumuser()
+                // document.getElementById('buy-button').innerText = 'Premium User';
+                // document.getElementById('buy-button').disabled = true;
+                // document.getElementById('buy-button').style.backgroundColor = 'gold';
+                // document.getElementById('buy-button').style.pointerEvents = 'none';
             }
 
             // Only add headers if not added yet

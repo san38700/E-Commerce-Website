@@ -11,4 +11,6 @@ router.post('/purchase/purchase-failure',ExpenseController.authenticate,purchase
 
 router.post('/purchase/updatetransactionstatus',ExpenseController.authenticate,purchaseController.updateTransactionStatus)
 
+router.get('/premium/leaderboard',purchaseController.leaderboard)
+
 module.exports = router;
