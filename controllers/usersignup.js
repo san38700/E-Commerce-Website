@@ -29,7 +29,7 @@ exports.userLogin = async (req, res) => {
       // Check if the user exists in the database
       const user = await NewUser.findOne({where: {email: email}});
       // console.log(user.email)
-      console.log(user.ispremiumuser)
+      //console.log(user.ispremiumuser)
 
       if (!user) {
           return res.status(404).json({ message: '404 User not found' });

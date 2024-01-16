@@ -21,7 +21,11 @@ const NewUser = sequelize.define('newuser', {
         type:Sequelize.STRING,
         unique:false
     },
-    ispremiumuser : Sequelize.BOOLEAN
+    ispremiumuser : Sequelize.BOOLEAN,
+    totalexpenses :{
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    }
 })
 
 module.exports = NewUser

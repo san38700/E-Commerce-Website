@@ -11,6 +11,19 @@ exports.addExpense = async (req,res,next) => {
     const user = jwt.verify(token,process.env.TOKEN_SECRET)
     console.log('userId >>>', user.userId)
     const data = await Expense.create({amount: amount, description: description, category: category, newuserId: user.userId})
+
+    const totalUserExpense = await NewUser.findByPk(user.userId);
+
+    if (totalUserExpense) {
+        const currentTotalExpenses = Number(totalUserExpense.totalexpenses) || 0;
+        const newTotalExpenses = currentTotalExpenses + Number(amount);
+        console.log(newTotalExpenses)
+    
+        // Update the totalExpenses field
+        await totalUserExpense.update({ totalexpenses: newTotalExpenses });
+    
+        //console.log(updatedUser);
+    } 
     res.status(201).json({newExpense:data})
     }catch(err){
         console.log(err)
@@ -51,7 +64,12 @@ exports.deleteExpense = async (req,res,next) => {
             return res.status(400).json({err : 'ID is missing'})
         }
     const expenseId = req.params.id
-    await Expense.destroy({where: {id :expenseId}})
+    await Expense.destroy({where: {id :expenseId}}) 
+    const users = await NewUser.findOne({where: {id:Expense.newuserId}})
+    console.log(users)
+    const currentTotalExpenses = Number(users.totalexpenses) || 0;
+    const newTotalExpenses = currentTotalExpenses - Number(Expense.amount); 
+    await users.update({totalexpenses: newTotalExpenses})
     res.sendStatus(200)
     }catch(err){
         console.log(err)

@@ -17,14 +17,13 @@ async function leaderboard(){
     leaderboard.innerHTML = ""
     await axios.get('http://localhost:3000/premium/leaderboard')
     .then(res => {
-        
-        res.data.forEach(expense => {
+        res.data.users.forEach(expense => {
             var i = 0
             
             const leaderboardItems = document.createElement('div');
 
             // Create a text node with the userName and append it to the li element
-            const expensesTextNode = document.createTextNode(`---> Name:${expense.name} Total Expense:${expense.total_cost}`);
+            const expensesTextNode = document.createTextNode(`---> Name:${expense.name} Total Expense:${expense.totalexpenses}`);
             leaderboardItems.appendChild(expensesTextNode);
 
             // Append the li element to the leaderboard
@@ -106,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(response)
             // Fetch and display expenses
             fetchAndDisplayExpenses();
-            leaderboard()
+            
         } catch (error) {
             console.error(error);
         }
@@ -128,6 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (ispremiumuser === true){
                 premiumuser()
+                leaderboard.innerHTML = ""
+                leaderBoardButton.addEventListener('click',leaderboard)
                 // document.getElementById('buy-button').innerText = 'Premium User';
                 // document.getElementById('buy-button').disabled = true;
                 // document.getElementById('buy-button').style.backgroundColor = 'gold';
