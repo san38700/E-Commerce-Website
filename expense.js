@@ -24,7 +24,7 @@ async function leaderboard(){
             const leaderboardItems = document.createElement('div');
 
             // Create a text node with the userName and append it to the li element
-            const expensesTextNode = document.createTextNode(`---> Name:${expense.userName} Total Expense:${expense.totalExpenses}`);
+            const expensesTextNode = document.createTextNode(`---> Name:${expense.name} Total Expense:${expense.total_cost}`);
             leaderboardItems.appendChild(expensesTextNode);
 
             // Append the li element to the leaderboard
@@ -210,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Remove the expense item from the DOM
             expenseItem.remove();
+            leaderboard()
         } catch (error) {
             console.error(error);
         }
