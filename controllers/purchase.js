@@ -82,23 +82,13 @@ exports.updateTransactionStatus = async (req, res) => {
 
 exports.leaderboard = async (req, res) => {
     try{
-        const users = await NewUser.findAll()
-        console.log(users.name)
-        return res.status(200).json({users:users})
         // joining tables method 
 
 
-        // const users = await NewUser.findAll({
-        //     attributes: ['id', 'name',[sequelize.fn('sum',sequelize.col('expenses.amount')), 'total_cost']],
-        //     include: [
-        //         {
-        //             model: Expense,
-        //             attributes: []
-        //         }
-        //     ],
-        //     group: ['newuser.id'],
-        //     order:[['total_cost',"DESC"]]
-        // })
+        const users = await NewUser.findAll({
+            order:[['totalexpenses',"DESC"]]
+        })
+        res.status(201).json({users:users})
 
         //include method
 

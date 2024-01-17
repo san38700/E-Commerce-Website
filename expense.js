@@ -10,6 +10,7 @@ function premiumuser(){
 
     
     leaderBoardButton.style.display = "block"
+    
 }
 
 async function leaderboard(){
@@ -103,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             //console.log(token)
             const response = await axios.post(`http://localhost:3000/expense/add-expense`, { amount, description, category},{headers :{'Authorization': token}});
             console.log(response)
+            alert('Please click again on leaderboard for updated data')
             // Fetch and display expenses
             fetchAndDisplayExpenses();
             
@@ -207,7 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function deleteExpense(expenseId, expenseItem) {
         try {
-            const response = await axios.delete(`http://localhost:3000/expense/delete-expense/${expenseId}`);
+            const token = localStorage.getItem('jwtToken')
+            const response = await axios.delete(`http://localhost:3000/expense/delete-expense/${expenseId}`,{headers: {'Authorization': token}});
 
             // Remove the expense item from the DOM
             expenseItem.remove();
