@@ -39,6 +39,7 @@ const commentRoutes = require('./routes/comment')
 const userSignUp = require('./routes/usersignup')
 const expenseRoutes = require('./routes/expense')
 const purchaseRoutes = require('./routes/purchase')
+const passwordRoutes = require('./routes/forgotpassword')
 const { name } = require('ejs');
 
 app.use(bodyParser.json({ extended: false }));
@@ -69,6 +70,8 @@ app.use(commentRoutes)
 app.use(userSignUp)
 
 app.use(purchaseRoutes)
+
+app.use(passwordRoutes)
 
 
 app.use(errorController.get404);
