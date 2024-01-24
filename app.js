@@ -17,6 +17,7 @@ const Post = require('./models/post')
 const Comment = require('./models/comment')
 const Expense = require('./models/expense')
 const NewUser = require('./models/usersignup')
+const ForgotPasswordRequest = require('./models/forgotpassword')
 
 
 
@@ -29,6 +30,9 @@ app.use(cors())
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+
+app.use(express.static(path.join(__dirname,'public')))
+
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -43,7 +47,8 @@ const passwordRoutes = require('./routes/forgotpassword')
 const { name } = require('ejs');
 
 app.use(bodyParser.json({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+
+
 
 app.use((req,res,next) => {
     User.findByPk(1)
@@ -96,6 +101,18 @@ Expense.belongsTo(NewUser)
 
 NewUser.hasMany(Order)
 Order.belongsTo(NewUser)
+
+NewUser.hasMany(ForgotPasswordRequest, {
+    foreignKey: 'userid', // The foreign key in ForgotPasswordRequest
+    sourceKey: 'id', // The primary key in User
+    as: 'forgotPasswordRequests' // Alias for the association
+})
+ForgotPasswordRequest.belongsTo(NewUser,{
+    foreignKey: 'userid', // The foreign key in ForgotPasswordRequest
+    targetKey: 'id', // The primary key in User
+    as: 'user' // Alias for the association
+})
+
 
 sequelize
     // .sync({force: true})
