@@ -26,7 +26,11 @@
     "pug": "^3.0.2",
     "razorpay": "^2.9.2",
     "sequelize": "^6.35.1",
+<<<<<<< HEAD
     "sib-api-v3-sdk": "^8.5.0",
     "uuid": "^9.0.1"
+=======
+    "sib-api-v3-sdk": "^8.5.0"
+>>>>>>> 23bf860ab2e66eab9474fb74d5e8ec39b3105f59
   }
 }

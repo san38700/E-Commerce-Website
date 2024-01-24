@@ -101,6 +101,7 @@ Expense.belongsTo(NewUser)
 
 NewUser.hasMany(Order)
 Order.belongsTo(NewUser)
+<<<<<<< HEAD
 
 NewUser.hasMany(ForgotPasswordRequest, {
     foreignKey: 'userid', // The foreign key in ForgotPasswordRequest
@@ -113,6 +114,8 @@ ForgotPasswordRequest.belongsTo(NewUser,{
     as: 'user' // Alias for the association
 })
 
+=======
+>>>>>>> 23bf860ab2e66eab9474fb74d5e8ec39b3105f59
 
 sequelize
     // .sync({force: true})

@@ -1,4 +1,5 @@
 const Sib = require('sib-api-v3-sdk')
+<<<<<<< HEAD
 const jwt = require('jsonwebtoken');
 const NewUser = require('../models/usersignup')
 const ForgotPasswordRequest = require('../models/forgotpassword')
@@ -9,10 +10,15 @@ const { v4: uuidv4 } = require('uuid')
 
 let requestid;
 let userid;
+=======
+
+
+>>>>>>> 23bf860ab2e66eab9474fb74d5e8ec39b3105f59
 
 exports.forgotpassword = async (req,res,next) => {
     const {Email} = req.body
     console.log(Email)
+<<<<<<< HEAD
 
     const user = await NewUser.findOne({where : {email : Email}})
     console.log(user.email,user.name)
@@ -26,6 +32,8 @@ exports.forgotpassword = async (req,res,next) => {
     const request = await ForgotPasswordRequest.findOne({where: {userid : user.id}})
     console.log(request.id)
 
+=======
+>>>>>>> 23bf860ab2e66eab9474fb74d5e8ec39b3105f59
     const client = Sib.ApiClient.instance;
 
     const apiKey = client.authentications['api-key']
@@ -34,7 +42,11 @@ exports.forgotpassword = async (req,res,next) => {
     const TranEmailApi = new Sib.TransactionalEmailsApi()
 
     const sender = {
+<<<<<<< HEAD
         email: 'sandeepkratosj@gmail.com',
+=======
+        email: 'sandeepkratosj@yahoo.in',
+>>>>>>> 23bf860ab2e66eab9474fb74d5e8ec39b3105f59
         Name: "Sandeep"
     }
 
@@ -48,6 +60,7 @@ exports.forgotpassword = async (req,res,next) => {
         {
             sender,
             to: receivers,
+<<<<<<< HEAD
             subject: 'Reset Password',
             // textContent: 'Please ignore password reset mail sent by mistake'
             htmlContent: `<p>Please <a href='http://localhost:3000/password/resetpassword/${request.id}'>click here</a> to reset your password</p>`,
@@ -102,4 +115,16 @@ exports.newpassword = async (req, res, next) => {
         res.status(500).json({error: "Internal Server Error"})
     }
     
+=======
+            subject: 'Test Subject',
+            textContent: 'Test Content'
+        }
+    )
+    .then(res => {
+
+       res.status(201).json({message: 'Please check your email for resetting your password'})
+        console.log(res)
+    })
+    .catch(err => console.log(err))
+>>>>>>> 23bf860ab2e66eab9474fb74d5e8ec39b3105f59
 }
