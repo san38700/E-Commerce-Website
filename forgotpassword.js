@@ -1,7 +1,6 @@
 const email = document.getElementById('email')
 const form = document.getElementById('form')
 
-<<<<<<< HEAD
 form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -19,12 +18,6 @@ form.addEventListener('submit', async function (e) {
         messageElement.innerHTML += `\"${response.data.message}\"`;
         const id = response.data.id;
 
-        try {
-            const resetResponse = await axios.get(`http://localhost:3000/password/resetpassword/${id}`);
-            console.log(resetResponse);
-        } catch (resetErr) {
-            console.log(resetErr);
-        }
     } catch (err) {
         console.log(err);
     }
@@ -62,19 +55,3 @@ form.addEventListener('submit', async function (e) {
 //     .catch(err => console.log(err))
 // })
 
-=======
-form.addEventListener('submit',function (e) {
-    e.preventDefault()
-    //const email = document.getElementById('email').value
-    const obj = {
-        Email : email.value
-    }
-
-    axios.post('http://localhost:3000/password/forgotpassword', obj)
-    .then(res => {
-        console.log(res)
-        
-    })
-    .catch(err => console.log(err))
-})
->>>>>>> 23bf860ab2e66eab9474fb74d5e8ec39b3105f59

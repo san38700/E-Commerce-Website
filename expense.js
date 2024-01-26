@@ -1,5 +1,24 @@
 leaderBoardButton = document.getElementById('leaderboard')
 leaderBoardButton.addEventListener('click',leaderboard)
+const downloadButton = document.getElementById('download')
+const month = document.getElementById('monthly')
+
+month.innerText = "Current Month"
+
+function updateDateTime() {
+    const currentDate = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
+    const formattedDate = currentDate.toLocaleDateString('en-US', options);
+
+    // Update the content of the element with id 'currentDateTime'
+    document.getElementById('currentDateTime').textContent = formattedDate;
+}
+
+// Call the function to update date and time on page load
+updateDateTime();
+
+// Update date and time every second (1000 milliseconds)
+setInterval(updateDateTime, 1000);
 
 function premiumuser(){
     premiumlabel = document.getElementById('buy-button')
@@ -10,6 +29,8 @@ function premiumuser(){
 
     
     leaderBoardButton.style.display = "block"
+    downloadButton.style.display = 'block'
+
     
 }
 
@@ -82,6 +103,8 @@ document.getElementById('buy-button').onclick = async function (e){
 document.addEventListener('DOMContentLoaded', () => {
     const expenseForm = document.getElementById('form');
     const expenseList = document.getElementById('items');
+    const yearlyList = document.getElementById('yearlyitems')
+
 
     // Create a single table for all expenses
     const tableElement = document.createElement('table');
@@ -124,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             //console.log(token)
             const response = await axios.get('http://localhost:3000/expense/get-expense',{headers: {'Authorization': token }});
             const expenses = response.data.Expenses;
-            console.log(response.data.premiumuser);
+            console.log(response.data.Expenses[0].createdAt);
             const ispremiumuser = response.data.premiumuser
 
             if (ispremiumuser === true){
@@ -141,6 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!headersAdded) {
                 const headerRow = tableElement.insertRow();
                 addTableHeader(headerRow,'Sl.No')
+                addTableHeader(headerRow, 'Date')
                 addTableHeader(headerRow, 'Amount');
                 addTableHeader(headerRow, 'Description');
                 addTableHeader(headerRow, 'Category');
@@ -150,6 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Append the table to the expenseList
             expenseList.appendChild(tableElement);
+           
+        
 
             // Display expenses
             for (let i = 0; i < expenses.length; i++) {
@@ -174,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add a row with cells for each property and the delete button
         const row = tableElement.insertRow();
         addTableCell(row, index+1+".")
+        addTableCell(row,"")
         addTableCell(row, expense.amount);
         addTableCell(row, expense.description);
         addTableCell(row, expense.category);

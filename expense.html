@@ -12,7 +12,7 @@
         }
 
         #form {
-            max-width: 400px;
+            max-width: 500px auto;
             margin: 20px auto;
             padding: 20px;
             background-color: #fff;
@@ -70,17 +70,15 @@
 <body> 
     <!-- <button id="buy-button">Buy Premium</button> 
     <button id="leaderboard" style="display: none;">Show leaderboard</button>  -->
+    <div id="currentDateTime"></div>
+    <br>
+    <h6> Add Expense</h6>
     <form id="form">
         <label for ="Enter Expense Amount"><strong>Enter Expense Amount</strong></label>
-        <br>
         <input type="text" id="amount-id">
-        <br>
         <label for ="Description" class="Description"><strong>Description</strong></label> 
-        <br> 
         <input type="text" id="description">
-        <br>
         <label for="Category"><strong>Category</strong></label>
-        <br>
         <select id="category" name="Category">
             <option value="Movies">Movies</option>
             <option value="Food">Food</option>
@@ -92,7 +90,13 @@
             </select>
         <br><br>
         <button id = "submit-id" class="btn-primary">Submit Expense</button>
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    </form>
+    <form id="incomeform">
+        <label for ="Income Amount"><strong>Enter Income Amount</strong></label>
+        <input type="text" id="income-id">
+        <label for ="Description" class="Description"><strong>Description</strong></label> 
+        <input type="text" id="description">
+        <button id = "incomeid" class="btn-primary">Submit Income</button>
     </form>
     <button id="buy-button">Buy Premium</button>
     <br>
@@ -100,13 +104,30 @@
     <div id="leaderboard-items" style="display: inline-flex; flex-direction: column;" gap="10px";>
         <!-- Your leaderboard items will be appended here -->
     </div>
+    <br><br>
+    <button id="download" style="background-color: beige; display: none;">Download Expenses</button>
+    <div style="text-align: center;">
+        <label for="selectedDate"><strong>Select a Date:</strong></label>
+        <input type="date" id="selectedDate" name="selectedDate">
+    </div>
+    <div>
         <br><br>
         <h2 id = "expense-id"> List of Expenses</h2>
+        <p id="monthly" style="text-align: center; font-size: x-large;"></p>
         <ul id="items">
 
         </ul>
     </div>
+    <div style="text-align: center;">
+        <br><br>
+        <p> Current Year </p>
+        <p id="year" style="text-align: center; font-size:medium;"></p>
+        <ul id="yearlyitems">
+
+        </ul>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="expense.js"></script>
 </body>
 </html>
