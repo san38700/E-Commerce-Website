@@ -18,6 +18,7 @@ const Comment = require('./models/comment')
 const Expense = require('./models/expense')
 const NewUser = require('./models/usersignup')
 const ForgotPasswordRequest = require('./models/forgotpassword')
+const Url = require('./models/fileurl')
 
 
 
@@ -113,6 +114,8 @@ ForgotPasswordRequest.belongsTo(NewUser,{
     as: 'user' // Alias for the association
 })
 
+NewUser.hasMany(Url)
+Url.belongsTo(NewUser)
 
 sequelize
     // .sync({force: true})

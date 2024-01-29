@@ -1,9 +1,58 @@
 leaderBoardButton = document.getElementById('leaderboard')
 leaderBoardButton.addEventListener('click',leaderboard)
 const downloadButton = document.getElementById('download')
-const month = document.getElementById('monthly')
+const downloadUrls = document.getElementById('downloaded-items')
 
-month.innerText = "Current Month"
+
+
+
+downloadButton.addEventListener('click', downloadExpense)
+
+function downloadExpense(){
+    const token = localStorage.getItem('jwtToken')
+    axios.get('http://localhost:3000/user/download', { headers: {"Authorization" : token} })
+    .then((response) => {
+        if(response.status === 201){
+            console.log(response)
+            var a = document.createElement("a");
+            a.href = response.data.fileURL;
+            a.download = 'myexpense.csv';
+            a.click();
+            downloadedExpense()
+
+        } else {
+            throw new Error(response.data.message)
+        }
+
+    })
+    .catch((err) => {
+        console.log(err)
+    });
+}
+
+function downloadedExpense() {
+    downloadUrls.innerHTML = ""
+    const token = localStorage.getItem('jwtToken')
+    axios.get('http://localhost:3000/user/downloads', { headers: {"Authorization" : token} })
+    .then((res) => {
+        if(res.data.downloadedExpenses.length == 0){
+            downloadUrls.innerHTML = "No downloaded data found"
+        }
+        
+        //console.log(res.data.downloadedExpenses.length)
+        res.data.downloadedExpenses.forEach(function (data){
+            console.log(data.url)
+            var a = document.createElement("a");
+            const url = data.url
+            a.href = url
+            const date = new Date
+            a.textContent = `${url}`
+            downloadUrls.appendChild(a)
+        })
+    })
+    .catch(err => console.log(err))
+    
+}
 
 function updateDateTime() {
     const currentDate = new Date();
@@ -31,7 +80,9 @@ function premiumuser(){
     leaderBoardButton.style.display = "block"
     downloadButton.style.display = 'block'
 
-    
+    const downloads = document.getElementById('old-downloads')
+    downloads.style.display = 'block'
+
 }
 
 async function leaderboard(){
@@ -147,13 +198,15 @@ document.addEventListener('DOMContentLoaded', () => {
             //console.log(token)
             const response = await axios.get('http://localhost:3000/expense/get-expense',{headers: {'Authorization': token }});
             const expenses = response.data.Expenses;
-            console.log(response.data.Expenses[0].createdAt);
+            console.log(response.data);
             const ispremiumuser = response.data.premiumuser
 
             if (ispremiumuser === true){
                 premiumuser()
                 leaderboard.innerHTML = ""
                 leaderBoardButton.addEventListener('click',leaderboard)
+                downloadUrls.innerHTML = ""
+                downloadedExpense()
                 // document.getElementById('buy-button').innerText = 'Premium User';
                 // document.getElementById('buy-button').disabled = true;
                 // document.getElementById('buy-button').style.backgroundColor = 'gold';
@@ -164,7 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!headersAdded) {
                 const headerRow = tableElement.insertRow();
                 addTableHeader(headerRow,'Sl.No')
-                addTableHeader(headerRow, 'Date')
                 addTableHeader(headerRow, 'Amount');
                 addTableHeader(headerRow, 'Description');
                 addTableHeader(headerRow, 'Category');
@@ -200,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add a row with cells for each property and the delete button
         const row = tableElement.insertRow();
         addTableCell(row, index+1+".")
-        addTableCell(row,"")
         addTableCell(row, expense.amount);
         addTableCell(row, expense.description);
         addTableCell(row, expense.category);

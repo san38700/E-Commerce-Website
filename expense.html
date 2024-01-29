@@ -91,38 +91,22 @@
         <br><br>
         <button id = "submit-id" class="btn-primary">Submit Expense</button>
     </form>
-    <form id="incomeform">
-        <label for ="Income Amount"><strong>Enter Income Amount</strong></label>
-        <input type="text" id="income-id">
-        <label for ="Description" class="Description"><strong>Description</strong></label> 
-        <input type="text" id="description">
-        <button id = "incomeid" class="btn-primary">Submit Income</button>
-    </form>
     <button id="buy-button">Buy Premium</button>
     <br>
     <button id="leaderboard" style="display: none;">Show leaderboard</button>
     <div id="leaderboard-items" style="display: inline-flex; flex-direction: column;" gap="10px";>
-        <!-- Your leaderboard items will be appended here -->
+        <!-- leaderboard items will be appended here -->
     </div>
     <br><br>
     <button id="download" style="background-color: beige; display: none;">Download Expenses</button>
-    <div style="text-align: center;">
-        <label for="selectedDate"><strong>Select a Date:</strong></label>
-        <input type="date" id="selectedDate" name="selectedDate">
+    <p style="font-weight: bold; display: none;"> Old Expenses </p>
+    <div id="downloaded-items" style="display: inline-flex; flex-direction: column;" gap="10px";>
+
     </div>
     <div>
         <br><br>
         <h2 id = "expense-id"> List of Expenses</h2>
-        <p id="monthly" style="text-align: center; font-size: x-large;"></p>
         <ul id="items">
-
-        </ul>
-    </div>
-    <div style="text-align: center;">
-        <br><br>
-        <p> Current Year </p>
-        <p id="year" style="text-align: center; font-size:medium;"></p>
-        <ul id="yearlyitems">
 
         </ul>
     </div>
