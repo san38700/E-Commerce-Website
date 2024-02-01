@@ -99,7 +99,7 @@
     </div>
     <br><br>
     <button id="download" style="background-color: beige; display: none;">Download Expenses</button>
-    <p style="font-weight: bold; display: none;"> Old Expenses </p>
+    <p id="old-downloads" style="font-weight: bold; display: none;"> Old Expenses </p>
     <div id="downloaded-items" style="display: inline-flex; flex-direction: column;" gap="10px";>
 
     </div>
@@ -110,6 +110,7 @@
 
         </ul>
     </div>
+    <div id="pagination" style="text-align: center;"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="expense.js"></script>

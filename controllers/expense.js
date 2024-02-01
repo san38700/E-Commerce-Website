@@ -108,11 +108,45 @@ exports.authenticate = async (req,res,next) => {
      }
 }
 
-exports.getExpense = async (req,res,next) => {
-    // const expenses = await Expense.findAll()
-    const expenses = await Expense.findAll({where : {newuserid : req.user.id}})
-    res.status(200).json({Expenses:expenses, premiumuser: req.user.ispremiumuser})
-}
+const items_per_page = 2
+
+exports.getExpense = async (req, res, next) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        let totalItems; // Adjust this based on your preferred page size
+        const expenses = await Expense.findAll({
+            where: { newuserid: req.user.id },
+            offset: (page - 1) * items_per_page,
+            limit: items_per_page
+        });
+        totalItems = await Expense.count({ where: { newuserid: req.user.id } });
+
+        res.status(200).json({ 
+            Expenses: expenses, 
+            premiumuser: req.user.ispremiumuser,
+            pageData: { 
+            totalItems, 
+            currentPage: page,
+            hasNextPage: items_per_page * page < totalItems,
+            nextPage: page + 1,
+            hasPreviousPage: page > 1,
+            previousPage: page - 1,
+            lastPage: Math.ceil(totalItems/items_per_page)
+            }
+    
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+
+// exports.getExpense = async (req,res,next) => {
+//     // const expenses = await Expense.findAll()
+//     const expenses = await Expense.findAll({where : {newuserid : req.user.id}})
+//     res.status(200).json({Expenses:expenses, premiumuser: req.user.ispremiumuser})
+// }
 
 
 

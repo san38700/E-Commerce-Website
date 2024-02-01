@@ -3,7 +3,7 @@ leaderBoardButton.addEventListener('click',leaderboard)
 const downloadButton = document.getElementById('download')
 const downloadUrls = document.getElementById('downloaded-items')
 
-
+let currentPage = 1;
 
 
 downloadButton.addEventListener('click', downloadExpense)
@@ -154,7 +154,8 @@ document.getElementById('buy-button').onclick = async function (e){
 document.addEventListener('DOMContentLoaded', () => {
     const expenseForm = document.getElementById('form');
     const expenseList = document.getElementById('items');
-    const yearlyList = document.getElementById('yearlyitems')
+    const pagination = document.getElementById('pagination')
+    
 
 
     // Create a single table for all expenses
@@ -180,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(response)
             alert('Please click again on leaderboard for updated data')
             // Fetch and display expenses
-            fetchAndDisplayExpenses();
+            fetchAndDisplayExpenses(currentPage);
             
         } catch (error) {
             console.error(error);
@@ -188,17 +189,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Fetch and display expenses on page load
-    fetchAndDisplayExpenses();
+    fetchAndDisplayExpenses(currentPage);
 
     // Function to fetch and display Expenses
-    async function fetchAndDisplayExpenses() {
+    async function fetchAndDisplayExpenses(page) {
         try {
             clearTableContent();
             const token = localStorage.getItem('jwtToken')
             //console.log(token)
-            const response = await axios.get('http://localhost:3000/expense/get-expense',{headers: {'Authorization': token }});
+            const response = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}`,{headers: {'Authorization': token }});
             const expenses = response.data.Expenses;
+            const pageData = response.data.pageData
             console.log(response.data);
+            console.log(pageData)
+            const totalItems = response.data.totalItems
             const ispremiumuser = response.data.premiumuser
 
             if (ispremiumuser === true){
@@ -212,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // document.getElementById('buy-button').style.backgroundColor = 'gold';
                 // document.getElementById('buy-button').style.pointerEvents = 'none';
             }
+
 
             // Only add headers if not added yet
             if (!headersAdded) {
@@ -233,7 +238,10 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < expenses.length; i++) {
                 //console.log(expenses[i])
                 showExpenseOnScreen(expenses[i], i);
+                showPagination(pageData)
             }
+
+
         } catch (error) {
             console.error(error);
         }
@@ -245,6 +253,37 @@ document.addEventListener('DOMContentLoaded', () => {
             tableElement.deleteRow(1);
         }
     }
+
+    function showPagination({
+        currentPage,
+        hasNextPage,
+        nextPage,
+        hasPreviousPage,
+        previousPage,
+    }){
+        pagination.innerHTML = ""
+
+        if(hasPreviousPage){
+            const btn2 = document.createElement('button')
+            btn2.innerHTML = previousPage
+            btn2.addEventListener('click', () => fetchAndDisplayExpenses(previousPage))
+            pagination.appendChild(btn2)
+        }
+
+        const btn1 = document.createElement('button')
+        btn1.innerHTML = `<h3>${currentPage}</h3`
+        btn1.addEventListener('click',() => fetchAndDisplayExpenses(currentPage))
+        pagination.appendChild(btn1)
+
+        if(hasNextPage){
+            const btn3 = document.createElement('button')
+            btn3.innerHTML = nextPage
+            btn3.addEventListener('click',() => fetchAndDisplayExpenses(nextPage))
+            pagination.appendChild(btn3)
+        }
+
+    }
+    
 
     // Function to display an expense on the screen
     function showExpenseOnScreen(expense, index) {
