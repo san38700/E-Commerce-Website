@@ -108,11 +108,13 @@ exports.authenticate = async (req,res,next) => {
      }
 }
 
-const items_per_page = 2
+
 
 exports.getExpense = async (req, res, next) => {
     try {
+        
         const page = parseInt(req.query.page) || 1;
+        const items_per_page = parseInt(req.query.pageitems) || 1
         let totalItems; // Adjust this based on your preferred page size
         const expenses = await Expense.findAll({
             where: { newuserid: req.user.id },

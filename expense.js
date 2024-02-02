@@ -4,6 +4,12 @@ const downloadButton = document.getElementById('download')
 const downloadUrls = document.getElementById('downloaded-items')
 
 let currentPage = 1;
+let itemsPerPage;
+let pageId = document.getElementById('pageid')
+
+
+
+
 
 
 downloadButton.addEventListener('click', downloadExpense)
@@ -111,6 +117,7 @@ async function leaderboard(){
 }
 
 
+
 document.getElementById('buy-button').onclick = async function (e){
     const token = localStorage.getItem('jwtToken')
     //console.log(token)
@@ -156,7 +163,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const expenseList = document.getElementById('items');
     const pagination = document.getElementById('pagination')
     
+    // Adding event listener to the select element
+    document.getElementById('items-per-page').addEventListener('change', function() {
+    itemsPerPage = document.getElementById('items-per-page').value;
+    fetchAndDisplayExpenses(currentPage, itemsPerPage);
 
+    });
 
     // Create a single table for all expenses
     const tableElement = document.createElement('table');
@@ -189,21 +201,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Fetch and display expenses on page load
-    fetchAndDisplayExpenses(currentPage);
+    fetchAndDisplayExpenses(currentPage,itemsPerPage);
 
     // Function to fetch and display Expenses
-    async function fetchAndDisplayExpenses(page) {
+    async function fetchAndDisplayExpenses(page,itemno) {
         try {
             clearTableContent();
             const token = localStorage.getItem('jwtToken')
             //console.log(token)
-            const response = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}`,{headers: {'Authorization': token }});
+            const response = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}&pageitems=${itemno}`,{headers: {'Authorization': token }});
             const expenses = response.data.Expenses;
             const pageData = response.data.pageData
-            console.log(response.data);
-            console.log(pageData)
-            const totalItems = response.data.totalItems
+            //console.log(response.data);
+            //console.log(pageData)
+            const totalItems = response.data.pageData.totalItems
+            //console.log(totalItems)
+            console.log
             const ispremiumuser = response.data.premiumuser
+            
+            //pageId.innerText = `Showing ${itemsPerPage} of ${totalItems}`
 
             if (ispremiumuser === true){
                 premiumuser()
@@ -266,19 +282,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if(hasPreviousPage){
             const btn2 = document.createElement('button')
             btn2.innerHTML = previousPage
-            btn2.addEventListener('click', () => fetchAndDisplayExpenses(previousPage))
+            btn2.addEventListener('click', () => fetchAndDisplayExpenses(previousPage,itemsPerPage))
             pagination.appendChild(btn2)
         }
 
         const btn1 = document.createElement('button')
         btn1.innerHTML = `<h3>${currentPage}</h3`
-        btn1.addEventListener('click',() => fetchAndDisplayExpenses(currentPage))
+        btn1.addEventListener('click',() => fetchAndDisplayExpenses(currentPage,itemsPerPage))
         pagination.appendChild(btn1)
 
         if(hasNextPage){
             const btn3 = document.createElement('button')
             btn3.innerHTML = nextPage
-            btn3.addEventListener('click',() => fetchAndDisplayExpenses(nextPage))
+            btn3.addEventListener('click',() => fetchAndDisplayExpenses(nextPage,itemsPerPage))
             pagination.appendChild(btn3)
         }
 
