@@ -1,10 +1,15 @@
 const path = require('path');
+const fs = require('fs')
 
 require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const Razorpay = require('razorpay');
+const helmet = require('helmet')
+const compression = require('compression')
+const morgan = require('morgan')
+
 const errorController = require('./controllers/error');
 const Product = require('./models/product')
 const User = require('./models/user')
@@ -47,8 +52,13 @@ const purchaseRoutes = require('./routes/purchase')
 const passwordRoutes = require('./routes/forgotpassword')
 const { name } = require('ejs');
 
-app.use(bodyParser.json({ extended: false }));
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
 
+
+app.use(bodyParser.json({ extended: false }));
+app.use(helmet())
+app.use(compression())
+app.use(morgan('combined', {stream: accessLogStream}))
 
 
 app.use((req,res,next) => {
@@ -120,7 +130,7 @@ Url.belongsTo(NewUser)
 sequelize
     // .sync({force: true})
     .sync()
-    .then(result => app.listen(3000))
+    .then(result => app.listen(process.env.PORT || 3000))
     .catch(err => console.log(err))
     // .then(result => {
     //     return User.findByPk(1)
