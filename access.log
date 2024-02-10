@@ -1,3 +1,6 @@
 ::1 - - [06/Feb/2024:08:25:55 +0000] "GET / HTTP/1.1" 304 - "http://localhost:3000/products" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
 ::1 - - [06/Feb/2024:08:26:10 +0000] "GET /expense/get-expense?page=1&pageitems=undefined HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
 ::1 - - [06/Feb/2024:08:26:10 +0000] "GET /user/downloads HTTP/1.1" 201 374 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+::1 - - [09/Feb/2024:07:05:00 +0000] "POST /user/login HTTP/1.1" 200 426 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+::1 - - [09/Feb/2024:07:05:02 +0000] "GET /expense/get-expense?page=1&pageitems=undefined HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+::1 - - [09/Feb/2024:07:05:02 +0000] "GET /user/downloads HTTP/1.1" 201 374 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
