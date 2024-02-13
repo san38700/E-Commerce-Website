@@ -60,6 +60,11 @@ app.use(helmet())
 app.use(compression())
 app.use(morgan('combined', {stream: accessLogStream}))
 
+app.use((req,res) => {
+    console.log('url',req.url)
+    res.sendFile(path.join(__dirname,`public/${req.url}`))
+})
+
 
 app.use((req,res,next) => {
     User.findByPk(1)

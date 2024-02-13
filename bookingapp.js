@@ -6,7 +6,7 @@ button.addEventListener('click', addItem)
 window.addEventListener("DOMContentLoaded",()=>{
     //let storedUserObj = localStorage.getItem('userObj')
 
-    axios.get("http://localhost:3000/user/get-users").then(
+    axios.get("http://51.20.7.24:3000/user/get-users").then(
         (resp)=>{
             console.log(resp)
             for(let i=0;i<resp.data.users.length;i++){
@@ -43,7 +43,7 @@ function showUseronScreen(Name,Phone,Email,id){
     //sxios delete
     //console.log(id)
     axios
-        .delete(`http://localhost:3000/user/delete-user/${id}`)
+        .delete(`http://51.20.7.24:3000/user/delete-user/${id}`)
         .then(console.log('success'))
         .catch(err => console.log(err))
 
@@ -57,7 +57,7 @@ function showUseronScreen(Name,Phone,Email,id){
         phone.value = Phone
         email.value = Email
         axios
-            .delete(`http://localhost:3000/user/edit-user/${id}`)
+            .delete(`http://51.20.7.24:3000/user/edit-user/${id}`)
             .then(console.log('success'))
             .catch(err => console.log(err))
         li.remove()
@@ -89,9 +89,9 @@ function addItem(e) {
     postData()
     function postData() {
         axios
-         .post('http://localhost:3000/user/add-user',obj)
+         .post('http://51.20.7.24:3000/user/add-user',obj)
          .then(res => {
-            axios.get('http://localhost:3000/user/get-users').then(res => console.log(res))
+            axios.get('http://51.20.7.24:3000/user/get-users').then(res => console.log(res))
             console.log(res)
         })
          .catch(err => console.log(err))
@@ -101,7 +101,7 @@ function addItem(e) {
 window.addEventListener("DOMContentLoaded",()=>{
 //let storedUserObj = localStorage.getItem('userObj')
 
-axios.get("http://localhost:3000/user/get-users").then(
+axios.get("http://51.20.7.24:3000/user/get-users").then(
     (resp)=>{
         console.log(resp)
         for(let i=0;i<resp.data.users.length;i++){
@@ -159,7 +159,7 @@ axios.get("http://localhost:3000/user/get-users").then(
 // window.addEventListener("DOMContentLoaded",()=>{
 //     //let storedUserObj = localStorage.getItem('userObj')
 
-//     axios.get("http://localhost:3000/user/get-users").then(
+//     axios.get("http://51.20.7.24:3000/user/get-users").then(
 //         (resp)=>{
 //             console.log(resp)
 //             for(let i=0;i<resp.data.users.length;i++){
@@ -196,7 +196,7 @@ axios.get("http://localhost:3000/user/get-users").then(
 //     //sxios delete
 //     //console.log(id)
 //     axios
-//         .delete(`http://localhost:3000/user/delete-user/${id}`)
+//         .delete(`http://51.20.7.24:3000/user/delete-user/${id}`)
 //         .then(console.log('success'))
 //         .catch(err => console.log(err))
 
@@ -210,7 +210,7 @@ axios.get("http://localhost:3000/user/get-users").then(
 //         phone.value = Phone
 //         email.value = Email
 //         axios
-//             .delete(`http://localhost:3000/user/edit-user/${id}`)
+//             .delete(`http://51.20.7.24:3000/user/edit-user/${id}`)
 //             .then(console.log('success'))
 //             .catch(err => console.log(err))
 //         li.remove()

@@ -25,7 +25,7 @@ exports.purchasepremium = async (req,res) => {
             })
         })
     }catch(err){
-        res.status(403).json({message: 'Something went wrong', error: err})
+        res.status(403).json({message: 'Something went wrong', error: 'this one'})
     }
 }
 
