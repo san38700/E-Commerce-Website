@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('User logged in successfully')
                 console.log(response.data.user);
                 localStorage.setItem('jwtToken', response.data.jwtToken)
-                window.location.href = 'D:\\Learning\\Controller\\2.2 00-starting-setup\\00-starting-setup\\expense.html';
+                window.location.href = '..\\expensetracker\\expense.html';
             })
             
             .catch(error => {

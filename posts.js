@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       // Create a new post
-      const response = await axios.post('http://51.20.7.24:3000/posts', { img, description });
+      const response = await axios.post('http://localhost:3000/posts', { img, description });
 
       // Fetch and display posts
       fetchAndDisplayPosts();
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Function to fetch and display posts
   async function fetchAndDisplayPosts() {
       try {
-        const response = await axios.get('http://51.20.7.24:3000/posts');
+        const response = await axios.get('http://localhost:3000/posts');
         const posts = response.data.posts;
   
         // Clear existing content
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Function to fetch and display comments for a post
   async function fetchAndDisplayComments(postId) {
       try {
-          const response = await axios.get(`http://51.20.7.24:3000/posts/${postId}/comments`);
+          const response = await axios.get(`http://localhost:3000/posts/${postId}/comments`);
           const comments = response.data.post.comments;
           const commentList = document.getElementById(`commentList_${postId}`);
           if (comments && comments.length > 0) {
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       // Add a new comment to the post
-      await axios.post('http://51.20.7.24:3000/comments', { comment: commentInput, postId });
+      await axios.post('http://localhost:3000/comments', { comment: commentInput, postId });
 
       // Fetch and display the updated posts
       fetchAndDisplayPosts();

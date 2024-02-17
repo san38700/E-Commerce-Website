@@ -52,7 +52,7 @@ exports.forgotpassword = async (req,res,next) => {
             to: receivers,
             subject: 'Reset Password',
             // textContent: 'Please ignore password reset mail sent by mistake'
-            htmlContent: `<p>Please <a href='http://51.20.7.24:3000/password/resetpassword/${request.id}'>click here</a> to reset your password</p>`,
+            htmlContent: `<p>Please <a href='http://localhost:3000/password/resetpassword?id=${request.id}'>click here</a> to reset your password</p>`,
         }
     )
     .then(result => {
@@ -65,8 +65,8 @@ exports.forgotpassword = async (req,res,next) => {
 
 
 exports.resetpassword = async (req, res, next) => {
-    const id = req.params.id
-    console.log(id)
+    const id = req.query.id
+    console.log('id',id)
 
     const request = await ForgotPasswordRequest.findOne({where: {id : id}})
     // .then(res => console.log(res))
@@ -75,7 +75,7 @@ exports.resetpassword = async (req, res, next) => {
     userid = request.userid
     //console.log(request.isactive,request.userid)
     if (request.isactive == true){
-        const filePath = path.join(rootDir,'resetpasswordform.html')
+        const filePath = path.join(__dirname, '../public/password/resetpassword.html')
         res.sendFile(filePath)
     }else{
         res.send('Link expired')
@@ -95,7 +95,7 @@ exports.newpassword = async (req, res, next) => {
         console.log(requestid)
         console.log(userid)
         const newUser = await NewUser.findOne({ where: {id: userid }});
-        const PasswordRequest = await ForgotPasswordRequest.findOne({ where: {userid: userid}})
+        const PasswordRequest = await ForgotPasswordRequest.findOne({ where: {id: requestid}})
         newUser.update({password: hashedPassword})
         PasswordRequest.update({isactive: false})
 

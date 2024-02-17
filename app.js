@@ -10,16 +10,16 @@ const helmet = require('helmet')
 const compression = require('compression')
 const morgan = require('morgan')
 
-const errorController = require('./controllers/error');
-const Product = require('./models/product')
-const User = require('./models/user')
-const Cart = require('./models/cart')
-const CartItem = require('./models/cart-item')
-const Order = require('./models/order')
-const OrderItem = require('./models/order-item')
-const Review = require('./models/review')
-const Post = require('./models/post')
-const Comment = require('./models/comment')
+// const errorController = require('./controllers/error');
+// const Product = require('./models/product')
+// const User = require('./models/user')
+// const Cart = require('./models/cart')
+// const CartItem = require('./models/cart-item')
+// const Order = require('./models/order')
+// const OrderItem = require('./models/order-item')
+// const Review = require('./models/review')
+// const Post = require('./models/post')
+// const Comment = require('./models/comment')
 const Expense = require('./models/expense')
 const NewUser = require('./models/usersignup')
 const ForgotPasswordRequest = require('./models/forgotpassword')
@@ -37,7 +37,7 @@ app.use(cors())
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-app.use(express.static(path.join(__dirname,'public')))
+// app.use(express.static(path.join(__dirname,'public')))
 
 
 const adminRoutes = require('./routes/admin');
@@ -56,37 +56,33 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'),
 
 
 app.use(bodyParser.json({ extended: false }));
-app.use(helmet())
+//app.use(helmet())
 app.use(compression())
 app.use(morgan('combined', {stream: accessLogStream}))
 
-app.use((req,res) => {
-    console.log('url',req.url)
-    res.sendFile(path.join(__dirname,`public/${req.url}`))
-})
 
 
-app.use((req,res,next) => {
-    User.findByPk(1)
-    .then(user => {
-        req.user = user
-        next()
-    })
-    .catch(err => console.log(err))
-})
+// app.use((req,res,next) => {
+//     User.findByPk(1)
+//     .then(user => {
+//         req.user = user
+//         next()
+//     })
+//     .catch(err => console.log(err))
+// })
 
-app.use(userRoutes);
+// app.use(userRoutes);
 app.use(expenseRoutes)
 
-app.use('/admin', adminRoutes);
-app.use(shopRoutes);
+// app.use('/admin', adminRoutes);
+// app.use(shopRoutes);
 
-app.use(reviewRoutes)
+// app.use(reviewRoutes)
 
-app.use(postRoutes)
+// app.use(postRoutes)
 
 
-app.use(commentRoutes)
+// app.use(commentRoutes)
 
 app.use(userSignUp)
 
@@ -94,29 +90,33 @@ app.use(purchaseRoutes)
 
 app.use(passwordRoutes)
 
+app.use((req,res) => {
+    console.log('url',req.url)
+    res.sendFile(path.join(__dirname,`public/${req.url}`))
+})
 
-app.use(errorController.get404);
+//app.use(errorController.get404);
 
-Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'})
-User.hasMany(Product)
-User.hasOne(Cart)
-Cart.belongsTo(User)
-Cart.belongsToMany(Product, {through : CartItem})
-Product.belongsToMany(Cart, {through: CartItem})
-//Order.belongsTo(User)
-//User.hasMany(Order) 
-//belongs to previous shop orders
-//Order.belongsToMany(Product, {through : OrderItem})
+// Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'})
+// User.hasMany(Product)
+// User.hasOne(Cart)
+// Cart.belongsTo(User)
+// Cart.belongsToMany(Product, {through : CartItem})
+// Product.belongsToMany(Cart, {through: CartItem})
+// //Order.belongsTo(User)
+// //User.hasMany(Order) 
+// //belongs to previous shop orders
+// //Order.belongsToMany(Product, {through : OrderItem})
 
 
-Post.hasMany(Comment);
-Comment.belongsTo(Post);
+// Post.hasMany(Comment);
+// Comment.belongsTo(Post);
 
 NewUser.hasMany(Expense)
 Expense.belongsTo(NewUser)
 
-NewUser.hasMany(Order)
-Order.belongsTo(NewUser)
+// NewUser.hasMany(Order)
+// Order.belongsTo(NewUser)
 
 NewUser.hasMany(ForgotPasswordRequest, {
     foreignKey: 'userid', // The foreign key in ForgotPasswordRequest

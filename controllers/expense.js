@@ -112,7 +112,6 @@ exports.authenticate = async (req,res,next) => {
 
 exports.getExpense = async (req, res, next) => {
     try {
-        
         const page = parseInt(req.query.page) || 1;
         const items_per_page = parseInt(req.query.pageitems) || 1
         let totalItems; // Adjust this based on your preferred page size
