@@ -10,7 +10,7 @@ form.addEventListener('submit', async function (e) {
     };
 
     try {
-        const response = await axios.post('http://51.20.7.24:3000/password/forgotpassword', obj);
+        const response = await axios.post('http://13.60.41.38:3000/password/forgotpassword', obj);
         console.log(response.data.id);
 
         var messageElement = document.getElementById("message");
@@ -36,7 +36,7 @@ form.addEventListener('submit', async function (e) {
 //         Email : email.value
 //     }
 
-//     axios.post('http://51.20.7.24:3000/password/forgotpassword', obj)
+//     axios.post('http://13.60.41.38:3000/password/forgotpassword', obj)
 //     .then(res => {
         
 //         console.log(res.data.id)
@@ -46,7 +46,7 @@ form.addEventListener('submit', async function (e) {
 //         messageElement.innerHTML += `\"${res.data.message}\"`;
 //         const id = res.data.id
         
-//         await axios.get(`http://51.20.7.24:3000/password/resetpassword/${id}`)
+//         await axios.get(`http://13.60.41.38:3000/password/resetpassword/${id}`)
 //         .then((res) => console.log(res))
 //         .catch(err => console.log(err))
     

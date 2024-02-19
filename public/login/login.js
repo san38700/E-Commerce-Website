@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         // Send a POST request using Axios
-        axios.post('http://51.20.7.24:3000/user/login', userObj)
+        axios.post('http://13.60.41.38:3000/user/login', userObj)
             .then(response => {
                 errorContainer.innerHTML = ""
                 alert('User logged in successfully')
