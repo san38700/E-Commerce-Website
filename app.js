@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname,'public')))
 
 
 const adminRoutes = require('./routes/admin');
-// const shopRoutes = require('./routes/shop');
+const shopRoutes = require('./routes/shop');
 // const userRoutes = require('./routes/user')
 // const reviewRoutes = require('./routes/nodejs')
 // const postRoutes = require('./routes/post')
@@ -64,6 +64,7 @@ app.use(morgan('combined', {stream: accessLogStream}))
 
 
 app.use('/admin',adminRoutes)
+app.use(shopRoutes)
 
 app.use(errorController.get404)
 

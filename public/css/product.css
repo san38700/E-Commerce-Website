@@ -25,3 +25,7 @@
 .product__description {
     text-align: center;
 }
+.btn {
+    display: block; /* Ensure the button is displayed */
+    /* Add other necessary styles */
+}
