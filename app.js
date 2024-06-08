@@ -11,6 +11,8 @@ const morgan = require('morgan')
 
 const mongoConnect = require('./util/database').mongoConnect
 
+const User = require('./models/usersignup')
+
 const errorController = require('./controllers/error');
 // const Product = require('./models/product')
 // const User = require('./models/user')
@@ -62,9 +64,20 @@ app.use(compression())
 app.use(morgan('combined', {stream: accessLogStream}))
 
 
+app.use((req, res, next) => {
+    User.findById('6663f513dae1b2e876b3b4b7')
+    .then(user => {
+        req.user = user
+        next()
+    })
+    .catch(err => console.log(err))
+})
+
 
 app.use('/admin',adminRoutes)
 app.use(shopRoutes)
+
+
 
 app.use(errorController.get404)
 
