@@ -3,20 +3,36 @@ const jwt = require('jsonwebtoken');
 
 const bcrypt = require('bcrypt')
 
-
 exports.createUser = async (req, res) => {
-    try {
-      const { name, email, password } = req.body;
-      const saltRounds = 10
-      const hashedPassword = await bcrypt.hash(password, saltRounds)
-      const newUser = await NewUser.create({ name, email, password : hashedPassword });
-      console.log(newUser)
-      res.status(201).json({ user: newUser });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error or User already exists' });
-    }
-  };
+    const { name, email, password } = req.body;
+    const saltRounds = 10
+    const hashedPassword = await bcrypt.hash(password, saltRounds)
+    const User = new NewUser(name, email, hashedPassword)
+    User
+    .save()
+    .then(result => {
+      console.log('User Added')
+      res.redirect('/admin/products')
+    })
+    .catch(err => { 
+      console.log(err)
+    })
+};
+
+
+// exports.createUser = async (req, res) => {
+//     try {
+//       const { name, email, password } = req.body;
+//       const saltRounds = 10
+//       const hashedPassword = await bcrypt.hash(password, saltRounds)
+//       const newUser = await NewUser.create({ name, email, password : hashedPassword });
+//       console.log(newUser)
+//       res.status(201).json({ user: newUser });
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ error: 'Internal Server Error or User already exists' });
+//     }
+//   };
 
 function generateAccessToken(id,name,premiumuser){
   const jwtToken = jwt.sign({userId : id, name : name, ispremiumuser: premiumuser},'9945B89D9F36B59C7C1BB97FF2F51')

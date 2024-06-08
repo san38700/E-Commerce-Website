@@ -67,7 +67,7 @@ app.use(morgan('combined', {stream: accessLogStream}))
 app.use((req, res, next) => {
     User.findById('6663f513dae1b2e876b3b4b7')
     .then(user => {
-        req.user = user
+        req.user = new User(user.name, user.email, user.cart, user._id)
         next()
     })
     .catch(err => console.log(err))
