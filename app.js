@@ -65,14 +65,14 @@ app.use(compression())
 app.use(morgan('combined', {stream: accessLogStream}))
 
 
-// app.use((req, res, next) => {
-//     User.findById('6663f513dae1b2e876b3b4b7')
-//     .then(user => {
-//         req.user = new User(user.name, user.email, user.cart, user._id)
-//         next()
-//     })
-//     .catch(err => console.log(err))
-// })
+app.use((req, res, next) => {
+    User.findById('667285c9cd6a6a3456f06a61')
+    .then(user => {
+        req.user = user
+        next()
+    })
+    .catch(err => console.log(err))
+})
 
 
 app.use('/admin',adminRoutes)
@@ -99,6 +99,18 @@ mongoose
     'mongodb+srv://sandeepkumar:bkrhgfM67EfWQIk9@cluster0.br5anyu.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster0'
   )
   .then(result => {
+    User.findOne().then(user => {
+        if (!user) {
+          const user = new User({
+            name: 'John',
+            email: 'john@test.com',
+            cart: {
+              items: []
+            }
+          });
+          user.save();
+        }
+      });
     console.log('Connected !')
     app.listen(3000);
   })
